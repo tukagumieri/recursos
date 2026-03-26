@@ -253,9 +253,15 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`\n✅ Servidor rodando em http://localhost:${PORT}`);
-    console.log(`📚 Base de conhecimento: ${indexName}`);
-    console.log(`🗄️  Supabase: ${process.env.SUPABASE_URL}`);
-});
+// Exporta para o Vercel (serverless)
+module.exports = app;
+
+// Roda localmente se não for serverless
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`\n✅ Servidor rodando em http://localhost:${PORT}`);
+        console.log(`📚 Base de conhecimento: ${indexName}`);
+        console.log(`🗄️  Supabase: ${process.env.SUPABASE_URL}`);
+    });
+}
