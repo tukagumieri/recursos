@@ -4,6 +4,7 @@ const path = require('path');
 const { Pinecone } = require('@pinecone-database/pinecone');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const pdfParse = require('pdf-parse');
+const mammoth = require('mammoth');
 
 // Inicializa clientes
 const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
@@ -38,8 +39,25 @@ async function extractText(filePath) {
         const dataBuffer = fs.readFileSync(filePath);
         const data = await pdfParse(dataBuffer);
         return data.text;
+    } else if (ext === '.docx') {
+        const result = await mammoth.extractRawText({ path: filePath });
+        return result.value;
     }
     return null;
+}
+
+function getAllFiles(dir) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const files = [];
+    for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            files.push(...getAllFiles(fullPath));
+        } else if (['.pdf', '.txt', '.md', '.docx'].includes(path.extname(entry.name).toLowerCase())) {
+            files.push(fullPath);
+        }
+    }
+    return files;
 }
 
 async function processDocuments() {
@@ -51,9 +69,9 @@ async function processDocuments() {
         return;
     }
 
-    const files = fs.readdirSync(docsDir).filter(f => f.endsWith('.pdf') || f.endsWith('.txt') || f.endsWith('.md'));
-    
-    if (files.length === 0) {
+    const filePaths = getAllFiles(docsDir);
+
+    if (filePaths.length === 0) {
         console.log("Nenhum documento encontrado na pasta 'docs'.");
         return;
     }
@@ -61,10 +79,10 @@ async function processDocuments() {
     const index = pc.index(indexName);
     const model = genAI.getGenerativeModel({ model: "gemini-embedding-001" });
 
-    for (const file of files) {
+    for (const filePath of filePaths) {
+        const file = path.relative(docsDir, filePath);
         console.log(`Processando documento: ${file}`);
         const safeId = file.normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9_\-]/g, "_");
-        const filePath = path.join(docsDir, file);
         const text = await extractText(filePath);
         
         if (!text) continue;
