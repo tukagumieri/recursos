@@ -334,7 +334,8 @@
             border-color: rgba(74, 222, 128, 0.3);
         }
 
-        .quick-action .qa-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+        .quick-action .qa-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; color: var(--green-accent); }
+        .quick-action .qa-icon svg { width: 16px; height: 16px; }
 
         .quick-action .qa-text strong {
             display: block;
@@ -428,7 +429,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
         }
 
         .welcome h2 { font-size: 26px; font-weight: 700; color: #fff; }
@@ -469,7 +469,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
             flex-shrink: 0;
         }
 
@@ -609,6 +608,60 @@
         #sendBtn:disabled { background: rgba(74, 222, 128, 0.2); cursor: not-allowed; }
         #sendBtn svg { color: white; }
 
+        #attachBtn {
+            background: none;
+            border: none;
+            color: rgba(134, 239, 172, 0.5);
+            cursor: pointer;
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: color 0.2s, background 0.2s;
+            flex-shrink: 0;
+        }
+
+        #attachBtn:hover { color: var(--green-accent); background: rgba(74, 222, 128, 0.1); }
+        #attachBtn.has-file { color: var(--green-accent); }
+
+        .file-preview-area {
+            max-width: 820px;
+            margin: 0 auto 8px;
+        }
+
+        .file-preview-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(74, 222, 128, 0.08);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+
+        .file-preview-name {
+            color: var(--text-white);
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .file-preview-remove {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 13px;
+            padding: 0 2px;
+            line-height: 1;
+            border-radius: 4px;
+        }
+
+        .file-preview-remove:hover { color: #f87171; }
+
         .input-hint {
             max-width: 820px;
             margin: 8px auto 0;
@@ -702,7 +755,7 @@
 
         <div class="quick-actions-section">
             <button class="quick-action" onclick="sendQuick('Preciso elaborar um recurso de multa por dirigir sob influência de álcool (Art. 165 do CTB). Me ajude a estruturar.')">
-                <span class="qa-icon">🍺</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v8L4 20h16L14 10V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/></svg></span>
                 <div class="qa-text">
                     <strong>Art. 165 – Álcool</strong>
                     <small>Recurso para multa de embriaguez ao volante</small>
@@ -710,7 +763,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('Preciso de um recurso por recusa ao bafômetro (Art. 165-A do CTB). Me ajude a elaborar o recurso.')">
-                <span class="qa-icon">🚫</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>
                 <div class="qa-text">
                     <strong>Art. 165-A – Recusa Bafômetro</strong>
                     <small>Recurso para recusa ao teste de alcoolemia</small>
@@ -718,7 +771,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('Preciso elaborar um recurso alegando ausência de notificação da autuação dentro do prazo legal. Me ajude.')">
-                <span class="qa-icon">📬</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
                 <div class="qa-text">
                     <strong>Ausência de Notificação</strong>
                     <small>Recurso por falta ou atraso na notificação</small>
@@ -726,7 +779,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('Preciso de um recurso alegando preclusão administrativa – o prazo para julgamento foi ultrapassado. Me ajude a elaborar.')">
-                <span class="qa-icon">⏱️</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
                 <div class="qa-text">
                     <strong>Preclusão Administrativa</strong>
                     <small>Recurso por prazo de julgamento vencido</small>
@@ -734,7 +787,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('Preciso de um recurso alegando que o condutor não é o proprietário do veículo. Me ajude a elaborar a preliminar.')">
-                <span class="qa-icon">🚗</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.5l2-4H16l2 4H19a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2z"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg></span>
                 <div class="qa-text">
                     <strong>Condutor ≠ Proprietário</strong>
                     <small>Preliminar de ilegitimidade de parte</small>
@@ -742,7 +795,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('Preciso de um recurso alegando inconsistência ou nulidade do Auto de Infração de Trânsito (AIT). Me ajude.')">
-                <span class="qa-icon">📋</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
                 <div class="qa-text">
                     <strong>Nulidade do AIT</strong>
                     <small>Recurso por vício formal no auto de infração</small>
@@ -750,7 +803,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('O etilômetro utilizado na autuação não passou pela verificação anual obrigatória. Me ajude a elaborar um recurso.')">
-                <span class="qa-icon">🔬</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.34 17a10 10 0 1 1 17.32 0"/><line x1="12" y1="17" x2="8.5" y2="11"/></svg></span>
                 <div class="qa-text">
                     <strong>Etilômetro sem Verificação</strong>
                     <small>Recurso por equipamento sem calibração</small>
@@ -758,7 +811,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('Quais os prazos legais para interposição de recurso de multa de trânsito no Brasil?')">
-                <span class="qa-icon">📅</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
                 <div class="qa-text">
                     <strong>Prazos para Recurso</strong>
                     <small>Defesa prévia, JARI, CETRAN</small>
@@ -766,7 +819,7 @@
             </button>
 
             <button class="quick-action" onclick="sendQuick('Explique as etapas do processo de recurso de multa de trânsito: defesa prévia, JARI e CETRAN.')">
-                <span class="qa-icon">⚖️</span>
+                <span class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></span>
                 <div class="qa-text">
                     <strong>Etapas do Recurso</strong>
                     <small>Defesa Prévia → JARI → CETRAN</small>
@@ -779,8 +832,8 @@
         <!-- Conversas Salvas (rollover) -->
         <div class="conversas-trigger">
             <button class="conversas-trigger-btn">
-                <span>🗂️ Conversas Salvas</span>
-                <span class="caret">▶</span>
+                <span style="display:flex;align-items:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Conversas Salvas</span>
+                <span class="caret"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
             </button>
             <div class="conversas-flyout">
                 <div class="conversas-flyout-title">Conversas Salvas</div>
@@ -806,12 +859,12 @@
         <!-- Título da conversa atual -->
         <div class="chat-header">
             <span id="chatTitle" style="color: rgba(134,239,172,0.4); font-style: italic;">Nenhuma conversa selecionada</span>
-            <button id="btnRenomear" onclick="abrirRenomear()" title="Renomear conversa" style="display:none">✏️</button>
+            <button id="btnRenomear" onclick="abrirRenomear()" title="Renomear conversa" style="display:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
         </div>
 
         <div class="messages" id="messages">
             <div class="welcome" id="welcome">
-                <div class="welcome-icon">⚖️</div>
+                <div class="welcome-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
                 <h2>Assistente de Recursos</h2>
                 <p>
                     Olá! Sou a IA da Marco Despachante. Posso ajudá-lo a elaborar recursos de multas de trânsito com base na nossa base de conhecimento jurídico.<br><br>
@@ -821,7 +874,22 @@
         </div>
 
         <div class="input-area">
+            <input type="file" id="fileInput" accept=".pdf,.docx,image/jpeg,image/png,image/webp,image/gif" style="display:none" onchange="handleFileSelect(event)">
+
+            <div class="file-preview-area" id="filePreviewArea" style="display:none">
+                <div class="file-preview-item">
+                    <span id="filePreviewIcon">📄</span>
+                    <span class="file-preview-name" id="filePreviewName"></span>
+                    <button class="file-preview-remove" onclick="removeAttachment()" title="Remover arquivo">✕</button>
+                </div>
+            </div>
+
             <div class="input-wrapper">
+                <button id="attachBtn" onclick="document.getElementById('fileInput').click()" title="Anexar PDF ou imagem">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                    </svg>
+                </button>
                 <textarea
                     id="userInput"
                     placeholder="Descreva sua situação ou faça uma pergunta sobre recursos de multa..."
@@ -836,7 +904,7 @@
                     </svg>
                 </button>
             </div>
-            <p class="input-hint">Enter para enviar · Shift+Enter para nova linha</p>
+            <p class="input-hint">Enter para enviar · Shift+Enter para nova linha · clipe para anexar PDF, DOCX ou imagem</p>
         </div>
     </div>
 </div>
@@ -863,6 +931,61 @@
     let chatHistory      = [];
     let isLoading        = false;
     let currentConversaId = null;
+    let attachedFile     = null;
+
+    const ICONS = {
+        scale:    `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>`,
+        user:     `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+        download: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+        trash:    `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>`,
+        book:     `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+        file:     `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+        image:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
+        word:     `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>`,
+    };
+
+    // ── Arquivo ────────────────────────────────────────────────────────────
+
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const DOCX_MIME = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        const validTypes = ['application/pdf', DOCX_MIME, 'image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        const isValid = validTypes.includes(file.type) || file.name.endsWith('.docx') || file.name.endsWith('.pdf');
+        if (!isValid) {
+            alert('Tipo não suportado. Use PDF, DOCX ou imagens (JPG, PNG, WebP, GIF).');
+            event.target.value = '';
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            alert('Arquivo muito grande. Tamanho máximo: 5 MB.');
+            event.target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const base64 = e.target.result.split(',')[1];
+            attachedFile = { name: file.name, type: file.type, data: base64 };
+            const iconEl = document.getElementById('filePreviewIcon');
+            if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) iconEl.innerHTML = ICONS.file;
+            else if (file.type.startsWith('image/')) iconEl.innerHTML = ICONS.image;
+            else iconEl.innerHTML = ICONS.word;
+            document.getElementById('filePreviewName').textContent = file.name;
+            document.getElementById('filePreviewArea').style.display = 'block';
+            document.getElementById('attachBtn').classList.add('has-file');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeAttachment() {
+        attachedFile = null;
+        document.getElementById('fileInput').value = '';
+        document.getElementById('filePreviewArea').style.display = 'none';
+        document.getElementById('attachBtn').classList.remove('has-file');
+    }
 
     // ── Utilidades ─────────────────────────────────────────────────────────
 
@@ -910,15 +1033,15 @@
         const div = document.createElement('div');
         div.className = `message ${role}`;
 
-        const avatarIcon = role === 'ai' ? '⚖️' : '👤';
+        const avatarIcon = role === 'ai' ? ICONS.scale : ICONS.user;
         const formattedContent = formatMarkdown(content);
 
         let sourcesHTML = '';
         if (sources.length > 0) {
             sourcesHTML = `
                 <div class="sources">
-                    <span style="font-size:11px;color:var(--text-muted)">📚 Fontes:</span>
-                    ${sources.map(s => `<span class="source-tag">📄 ${s.filename} · ${s.score}%</span>`).join('')}
+                    <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px">${ICONS.book} Fontes:</span>
+                    ${sources.map(s => `<span class="source-tag">${ICONS.file} ${s.filename} · ${s.score}%</span>`).join('')}
                 </div>
             `;
         }
@@ -939,7 +1062,7 @@
         div.className = 'message ai';
         div.id = 'loading-msg';
         div.innerHTML = `
-            <div class="avatar ai">⚖️</div>
+            <div class="avatar ai">${ICONS.scale}</div>
             <div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>
         `;
         messagesEl.appendChild(div);
@@ -979,8 +1102,8 @@
                     <div class="conversa-data">${formatData(c.updated_at)}</div>
                 </div>
                 <div class="conversa-actions">
-                    <button class="conversa-action-btn download" title="Download" onclick="downloadConversa(event, '${c.id}', '${escHtml(c.titulo)}')">⬇️</button>
-                    <button class="conversa-action-btn delete" title="Excluir" onclick="deletarConversa(event, '${c.id}')">🗑️</button>
+                    <button class="conversa-action-btn download" title="Download" onclick="downloadConversa(event, '${c.id}', '${escHtml(c.titulo)}')">${ICONS.download}</button>
+                    <button class="conversa-action-btn delete" title="Excluir" onclick="deletarConversa(event, '${c.id}')">${ICONS.trash}</button>
                 </div>
             </div>
         `).join('');
@@ -1016,7 +1139,7 @@
             if (msgs.length === 0) {
                 messagesEl.innerHTML = `
                     <div class="welcome" id="welcome">
-                        <div class="welcome-icon">⚖️</div>
+                        <div class="welcome-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
                         <h2>Conversa vazia</h2>
                         <p>Comece digitando sua mensagem abaixo.</p>
                     </div>`;
@@ -1044,7 +1167,7 @@
 
         messagesEl.innerHTML = `
             <div class="welcome" id="welcome">
-                <div class="welcome-icon">⚖️</div>
+                <div class="welcome-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg></div>
                 <h2>Assistente de Recursos</h2>
                 <p>Olá! Sou a IA da Marco Despachante. Posso ajudá-lo a elaborar recursos de multas de trânsito com base na nossa base de conhecimento jurídico.<br><br>
                 Use os atalhos na lateral ou descreva sua situação para começarmos.</p>
@@ -1123,26 +1246,33 @@
 
     async function sendMessage() {
         const text = inputEl.value.trim();
-        if (!text || isLoading) return;
+        if ((!text && !attachedFile) || isLoading) return;
 
         isLoading = true;
         sendBtn.disabled = true;
         inputEl.value = '';
         inputEl.style.height = 'auto';
 
-        appendMessage('user', text);
-        chatHistory.push({ role: 'user', content: text });
+        const currentFile = attachedFile;
+        removeAttachment();
+
+        const displayText = text || `📎 ${currentFile.name}`;
+        appendMessage('user', displayText);
+        chatHistory.push({ role: 'user', content: text || `Arquivo: ${currentFile.name}` });
         appendLoading();
 
         try {
+            const body = {
+                message: text,
+                history: chatHistory.slice(0, -1),
+                conversaId: currentConversaId
+            };
+            if (currentFile) body.attachedFile = currentFile;
+
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: text,
-                    history: chatHistory.slice(0, -1),
-                    conversaId: currentConversaId
-                })
+                body: JSON.stringify(body)
             });
 
             const data = await response.json();

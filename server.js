@@ -2,13 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const pdfParse = require('pdf-parse');
+const mammoth  = require('mammoth');
 const { Pinecone } = require('@pinecone-database/pinecone');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
@@ -37,6 +39,35 @@ Se o usuário pedir para elaborar um recurso, pergunte as informações necessá
 - Data da infração
 - Descrição do ocorrido
 - Nome do condutor/proprietário`;
+
+async function processAttachedFile(file) {
+    const buffer = Buffer.from(file.data, 'base64');
+
+    if (file.type === 'application/pdf') {
+        const pdfData = await pdfParse(buffer);
+        const text = pdfData.text.substring(0, 6000);
+        return `\n\n=== DOCUMENTO PDF ANEXADO: ${file.name} ===\n${text}\n=== FIM DO DOCUMENTO ===`;
+    }
+
+    const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    if (file.type === DOCX || file.name.endsWith('.docx')) {
+        const result = await mammoth.extractRawText({ buffer });
+        const text = result.value.substring(0, 6000);
+        return `\n\n=== DOCUMENTO WORD ANEXADO: ${file.name} ===\n${text}\n=== FIM DO DOCUMENTO ===`;
+    }
+
+    if (file.type.startsWith('image/')) {
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const result = await model.generateContent([
+            'Descreva detalhadamente o conteúdo desta imagem. Se houver textos, documentos, notificações, autos de infração ou qualquer informação relacionada a multas de trânsito, transcreva e descreva tudo com precisão.',
+            { inlineData: { mimeType: file.type, data: file.data } }
+        ]);
+        const description = result.response.text();
+        return `\n\n=== IMAGEM ANEXADA: ${file.name} ===\n${description}\n=== FIM DA IMAGEM ===`;
+    }
+
+    return '';
+}
 
 async function searchKnowledgeBase(query, topK = 5) {
     try {
@@ -147,9 +178,11 @@ app.get('/api/conversas/:id/download', async (req, res) => {
 // ── CHAT ─────────────────────────────────────────────────────────────────────
 
 app.post('/api/chat', async (req, res) => {
-    const { message, history = [], conversaId } = req.body;
+    const { message, history = [], conversaId, attachedFile } = req.body;
 
-    if (!message) {
+    const userText = message || (attachedFile ? `Arquivo anexado: ${attachedFile.name}` : '');
+
+    if (!userText) {
         return res.status(400).json({ error: 'Mensagem não fornecida.' });
     }
 
@@ -158,7 +191,7 @@ app.post('/api/chat', async (req, res) => {
         let convId = conversaId;
         if (!convId) {
             // Usa as primeiras palavras da mensagem como título
-            const titulo = message.length > 50 ? message.substring(0, 50) + '...' : message;
+            const titulo = userText.length > 50 ? userText.substring(0, 50) + '...' : userText;
             const { data: novaConversa, error: errConv } = await supabase
                 .from('conversas')
                 .insert({ titulo })
@@ -172,7 +205,7 @@ app.post('/api/chat', async (req, res) => {
             await supabase.from('mensagens').insert({
                 conversa_id: convId,
                 role: 'user',
-                content: message,
+                content: userText,
                 sources: []
             });
             // Atualiza updated_at da conversa
@@ -182,8 +215,19 @@ app.post('/api/chat', async (req, res) => {
                 .eq('id', convId);
         }
 
+        // Processa arquivo anexado (PDF ou imagem)
+        let fileContext = '';
+        if (attachedFile) {
+            try {
+                fileContext = await processAttachedFile(attachedFile);
+            } catch (fileErr) {
+                console.error('Erro ao processar arquivo anexado:', fileErr.message);
+                fileContext = `\n\n[Não foi possível processar o arquivo: ${attachedFile.name}]`;
+            }
+        }
+
         // Busca documentos relevantes no Pinecone
-        const results = await searchKnowledgeBase(message);
+        const results = await searchKnowledgeBase(userText);
 
         let contextText = '';
         if (results.length > 0) {
@@ -197,9 +241,10 @@ app.post('/api/chat', async (req, res) => {
             contextText += '\n=== FIM DOS DOCUMENTOS ===\n';
         }
 
+        const messageWithFile = fileContext ? `${userText}${fileContext}` : userText;
         const userMessageWithContext = contextText
-            ? `${message}\n\nContexto disponível:${contextText}`
-            : message;
+            ? `${messageWithFile}\n\nContexto disponível:${contextText}`
+            : messageWithFile;
 
         const messages = [
             { role: 'system', content: SYSTEM_PROMPT },
