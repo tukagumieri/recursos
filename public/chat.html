@@ -532,6 +532,32 @@
             gap: 4px;
         }
 
+        /* Ações na mensagem (ex: Copiar) */
+        .message-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-white);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
         /* Loading */
         .typing { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
 
@@ -1046,10 +1072,43 @@
             `;
         }
 
-        div.innerHTML = `
-            <div class="avatar ${role}">${avatarIcon}</div>
-            <div class="bubble">${formattedContent}${sourcesHTML}</div>
-        `;
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = `avatar ${role}`;
+        avatarDiv.innerHTML = avatarIcon;
+
+        const bubbleDiv = document.createElement('div');
+        bubbleDiv.className = 'bubble';
+        bubbleDiv.innerHTML = formattedContent + sourcesHTML;
+
+        // Botão de copiar apenas para respostas da IA
+        if (role === 'ai') {
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'message-actions';
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.title = 'Copiar mensagem';
+            copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span style="font-size: 11px; margin-left: 6px;">Copiar</span>`;
+            
+            copyBtn.onclick = () => {
+                // Copia o texto puro para que ao colar no Word assuma a cor preta/padrão do app de destino
+                navigator.clipboard.writeText(content).then(() => {
+                    const originalHtml = copyBtn.innerHTML;
+                    copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span style="font-size: 11px; margin-left: 6px; color: var(--green-accent);">Copiado!</span>`;
+                    copyBtn.style.color = 'var(--green-accent)';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHtml;
+                        copyBtn.style.color = '';
+                    }, 2000);
+                }).catch(err => console.error("Falha ao copiar:", err));
+            };
+
+            actionsDiv.appendChild(copyBtn);
+            bubbleDiv.appendChild(actionsDiv);
+        }
+
+        div.appendChild(avatarDiv);
+        div.appendChild(bubbleDiv);
 
         messagesEl.appendChild(div);
         messagesEl.scrollTop = messagesEl.scrollHeight;
